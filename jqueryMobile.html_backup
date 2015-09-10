@@ -13,11 +13,6 @@
 	.ui-content {
     	padding: 0.1 !important;
 	}
-	* { margin:0; padding:0; } /* to remove the top and left whitespace */
-
-	html, body { width:100%; height:100%; } /* just to be sure these are full screen*/
-
-	canvas { display:block; } /* To remove the scrollbars */
 	</style>
 </head>
 <body>
@@ -29,7 +24,7 @@
 <div role="content" class="ui-content" style="height: 70%;" data-position="fixed" id="main">
 	<div class="ui-grid-a" style="height:70%;">
 		<div class="ui-block-a" id="canvasDiv" style="height:100%;width:80%;">
-			<canvas id="canvas"  style="border:solid 1px #000000; background-color:#ffffff;">이 브라우저에서는 HTML5 CANVAS를 지원하지 않습니다.</canvas>
+			<canvas id="canvas" width="100px" height="100px" style="border:solid 1px #000000; background-color:#ffffff;">이 브라우저에서는 HTML5 CANVAS를 지원하지 않습니다.</canvas>
 		</div>
 		<div class="ui-block-b" id="canvasDiv" style="height:100%;width:2%;"></div>
 		<div class="ui-block-c" style="height:100%;width:18%;margin-top:-9px;" id="listColor">
@@ -43,21 +38,21 @@
 			<a href="#" data-role="button" data-inline="true"style="background: #ffffff; color: white;"></a>
 	    </div>
   	</div>
-<!-- 	<div style="height:30%;"> -->
-<!-- 		<div style="overflow:scroll; height: 99%;"> -->
-<!-- 				<div class='message' align='right'><span class='username'> 나:</span> 메세지</div> -->
-<!-- 				<div class='message' align='right'><span class='username'> 나:</span> 메세지</div> -->
-<!-- 				<div class='message' align='right'><span class='username'> 나:</span> 메세지</div> -->
-<!-- 				<div class='message' align='right'><span class='username'> 나:</span> 메세지</div> -->
-<!-- 				<div class='message' align='right'><span class='username'> 나:</span> 메세지</div> -->
-<!-- 				<div class='message' align='right'><span class='username'> 나:</span> 메세지</div> -->
-<!-- 				<div class='message' align='right'><span class='username'> 나:</span> 메세지</div> -->
-<!-- 				<div class='message' align='right'><span class='username'> 나:</span> 메세지</div> -->
-<!-- 				<div class='message' align='right'><span class='username'> 나:</span> 메세지</div> -->
-<!-- 				<div class='message' align='right'><span class='username'> 나:</span> 메세지</div> -->
-<!-- 				<div class='message' align='right'><span class='username'> 나:</span> 메세지</div> -->
-<!-- 		</div> -->
-<!-- 	</div> -->
+	<div style="height:30%;">
+		<div style="overflow:scroll; height: 99%;">
+				<div class='message' align='right'><span class='username'> 나:</span> 메세지</div>
+				<div class='message' align='right'><span class='username'> 나:</span> 메세지</div>
+				<div class='message' align='right'><span class='username'> 나:</span> 메세지</div>
+				<div class='message' align='right'><span class='username'> 나:</span> 메세지</div>
+				<div class='message' align='right'><span class='username'> 나:</span> 메세지</div>
+				<div class='message' align='right'><span class='username'> 나:</span> 메세지</div>
+				<div class='message' align='right'><span class='username'> 나:</span> 메세지</div>
+				<div class='message' align='right'><span class='username'> 나:</span> 메세지</div>
+				<div class='message' align='right'><span class='username'> 나:</span> 메세지</div>
+				<div class='message' align='right'><span class='username'> 나:</span> 메세지</div>
+				<div class='message' align='right'><span class='username'> 나:</span> 메세지</div>
+		</div>
+	</div>
 </div>
 <div data-role="footer" data-position="fixed">
 	<table style='width:100%'>
@@ -72,6 +67,7 @@
 	</table>
 </div>
 </div>
+<!-- <canvas id="canvas" width="100px" height="100px" style="border:solid 1px #000000; background-color:#ffffff;">이 브라우저에서는 HTML5 CANVAS를 지원하지 않습니다.</canvas> -->
 <script type="text/javascript">
 //G_COLOR 변수의 값을 return 해준다. 그러나 G_COLOR값이 없을경우 listColor 안에서 첫번째 값을 리턴한다.
 function getColor (el) {
@@ -79,43 +75,25 @@ function getColor (el) {
 }
 
 $(function(){
+	var heightDoument = $(document).height();
+	var widthDoument 	= $(document).width();
+
+	$("#main").height(heightDoument*78/100)
+	$("#canvasDiv").height($("#main").height()*70/100);
+
+// 	$("#canvas").width($("#canvasDiv").width());
+// 	$("#canvas").height($("#canvasDiv").height()*92/100);
+
+// 	$("#canvas").width(document.width);
+
 });
-(function() {
-	$("#main").height(window.innerHeight*78/100)
-	$("#main").width(window.innerWidth)
-	$("#canvasDiv").height($("#main").innerWidth());
-    var canvas = document.getElementById('canvas'),
-            context = canvas.getContext('2d');
-
-    // resize the canvas to fill browser window dynamically
-    window.addEventListener('resize', resizeCanvas, false);
-
-    function resizeCanvas() {
-            canvas.width = $("#canvasDiv").innerWidth();
-            canvas.height = $("#canvasDiv").innerHeight();
-
-            /**
-             * Your drawings need to be inside this function otherwise they will be reset when
-             * you resize the browser window and the canvas goes will be cleared.
-             */
-            drawStuff();
-    }
-    resizeCanvas();
-
-    function drawStuff() {
-            // do your drawing stuff here
-    }
-})();
-
 	var G_COLOR 	 	= "";  		//line 색깔
 	var G_LINE_WIDTH 	= "";		//line 두께
 	var canvas	 		= null;		//캔버스 object
 	var ctx	 			= null;		//2D OBJECT
 	var socket			= null;		//socket object
-
 	//init
-	G_COLOR			= "#000000"			//디폴트값 설정
-// 	G_COLOR			= getColor($("#listColor").find("a:eq(0)"));			//디폴트값 설정
+	G_COLOR			= getColor($("#listColor").find("a:eq(0)"));			//디폴트값 설정
 	G_LINE_WIDTH 	= "3";
 
 	canvas 		= document.querySelector("#canvas");
